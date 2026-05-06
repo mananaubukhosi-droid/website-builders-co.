@@ -2,57 +2,64 @@ import facialImg from "@/assets/treatment-facial.jpg";
 import nailsImg from "@/assets/treatment-nails.jpg";
 import massageImg from "@/assets/treatment-massage.jpg";
 
-const treatments = [
+type Item = { name: string; price: string };
+type Category = { title: string; image: string; items: Item[] };
+
+const categories: Category[] = [
   {
-    title: "Facials",
-    desc: "Deeply cleansing, brightening and rejuvenating rituals tailored to your skin.",
-    image: facialImg,
-  },
-  {
-    title: "Microblading",
-    desc: "Bespoke brow artistry — natural, defined and beautifully shaped.",
-    image: facialImg,
-  },
-  {
-    title: "Eyelash Extensions",
-    desc: "Lashes that flutter — classic, hybrid and volume sets applied with precision.",
-    image: facialImg,
-  },
-  {
-    title: "Manicure & Pedicure",
-    desc: "Spa-grade hand and foot care that leaves you polished from tip to toe.",
-    image: nailsImg,
-  },
-  {
-    title: "Full Body Massages",
-    desc: "Swedish, deep tissue and hot stone — restorative touch for body and mind.",
+    title: "Massages",
     image: massageImg,
+    items: [
+      { name: "Swedish massage (60min)", price: "R550" },
+      { name: "Hot stone massage (60min)", price: "R600" },
+      { name: "Aroma stone massage (60min)", price: "R650" },
+      { name: "Back, neck & shoulder (30min)", price: "R330" },
+      { name: "Back, neck & shoulder (45min)", price: "R450" },
+    ],
   },
   {
-    title: "Nail Extensions",
-    desc: "Sculpted, styled and finished — from elegant naturals to bold statements.",
-    image: nailsImg,
-  },
-  {
-    title: "Spa Packages",
-    desc: "Curated half-day and full-day journeys for the ultimate escape.",
-    image: massageImg,
-  },
-  {
-    title: "Waxing & More",
-    desc: "Smooth, gentle hair removal and the little extras that complete your visit.",
+    title: "Skincare Services",
     image: facialImg,
+    items: [
+      { name: "Basic Facial", price: "R500" },
+      { name: "Deep Cleansing Facial", price: "R890" },
+      { name: "Anti-Aging Facial with RF", price: "R1050" },
+      { name: "Microneedling", price: "R850" },
+      { name: "Dermaplanning", price: "R700" },
+    ],
+  },
+  {
+    title: "Waxing Services",
+    image: facialImg,
+    items: [
+      { name: "Eyebrow Waxing", price: "R95" },
+      { name: "Lip Waxing", price: "R95" },
+      { name: "Full Leg Wax", price: "R360" },
+      { name: "Underarm Wax", price: "R150" },
+      { name: "Brazilian Wax", price: "R320" },
+    ],
+  },
+  {
+    title: "Hand / Foot Service",
+    image: nailsImg,
+    items: [
+      { name: "Nail Extensions", price: "R250" },
+      { name: "Nail Art (per nail)", price: "R15 – R25" },
+      { name: "Manicure (gel paint)", price: "R125" },
+      { name: "Pedicure (gel paint)", price: "R200" },
+      { name: "Paraffin Treatment", price: "R90" },
+    ],
   },
 ];
 
 const Treatments = () => {
   return (
     <section id="treatments" className="py-32 px-6 lg:px-12 relative">
-      <div className="max-w-7xl mx-auto">
+      <div className="max-w-6xl mx-auto">
         <div className="text-center mb-20">
           <p className="text-xs tracking-[0.5em] uppercase text-primary mb-4">Our Menu</p>
           <h2 className="font-display text-5xl md:text-7xl text-foreground mb-6 italic">
-            Treatments
+            Treatments & Pricing
           </h2>
           <div className="gold-divider w-24 mx-auto mb-6" />
           <p className="max-w-xl mx-auto text-muted-foreground">
@@ -60,28 +67,40 @@ const Treatments = () => {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {treatments.map((t, i) => (
+        <div className="space-y-10">
+          {categories.map((cat) => (
             <article
-              key={t.title}
-              className="group relative overflow-hidden bg-card border border-border/40 hover:border-primary/60 transition-all duration-500"
-              style={{ animationDelay: `${i * 80}ms` }}
+              key={cat.title}
+              className="grid grid-cols-1 md:grid-cols-[200px_1fr] gap-6 md:gap-10 items-stretch bg-card border border-border/40 hover:border-primary/60 transition-all duration-500 p-4 md:p-6"
             >
-              <div className="aspect-[4/5] overflow-hidden">
+              <div className="aspect-square w-full overflow-hidden">
                 <img
-                  src={t.image}
-                  alt={t.title}
+                  src={cat.image}
+                  alt={cat.title}
                   loading="lazy"
-                  className="w-full h-full object-cover grayscale-[30%] group-hover:grayscale-0 group-hover:scale-110 transition-all duration-700"
+                  className="w-full h-full object-cover"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-background via-background/40 to-transparent" />
               </div>
-              <div className="absolute bottom-0 left-0 right-0 p-6">
-                <h3 className="font-display text-2xl text-foreground mb-2">{t.title}</h3>
-                <div className="h-px w-8 bg-primary mb-3 group-hover:w-16 transition-all duration-500" />
-                <p className="text-sm text-muted-foreground leading-relaxed opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                  {t.desc}
-                </p>
+
+              <div className="flex flex-col justify-center">
+                <h3 className="font-display text-2xl md:text-3xl uppercase tracking-wider text-foreground mb-4">
+                  {cat.title}
+                </h3>
+                <div className="h-px w-12 bg-primary mb-5" />
+                <ul className="space-y-3">
+                  {cat.items.map((item) => (
+                    <li
+                      key={item.name}
+                      className="flex items-baseline justify-between gap-4 text-sm md:text-base"
+                    >
+                      <span className="text-foreground/90">{item.name}</span>
+                      <span className="flex-1 mx-2 border-b border-dotted border-border/60 translate-y-[-3px]" />
+                      <span className="text-primary font-medium whitespace-nowrap">
+                        {item.price}
+                      </span>
+                    </li>
+                  ))}
+                </ul>
               </div>
             </article>
           ))}
